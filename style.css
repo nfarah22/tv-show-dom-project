@@ -1,3 +1,64 @@
 #root {
-  color: red;
+  color: black;
 }
+.container-div {
+  background-color: #f2f2f2;
+}
+
+
+
+.episode-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+  grid-gap: 1rem;
+}
+
+.episode {
+  border: none;
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  background-color: white;
+}
+
+.episode h2 {
+  border: 1px solid black;
+  font-weight: bold;
+  font-size: 1.2em;
+  margin: 0;
+  padding: 0.5rem;
+  border-bottom: none;
+}
+
+.episode img {
+  border: 1px solid black;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  display: block;
+  width: 220px;
+  height: 220px;
+  object-fit: cover;
+  margin:0 auto ;
+}
+
+.episode div {
+  border: 1px solid black;
+  border-top: none;
+  border-radius: 10px;
+  padding: 1rem;
+  overflow: hidden;
+}
+
+.episode p {
+  margin: 0;
+  font-size: 0.9em;
+}
+
+
+
+
+
+
+
+
+
