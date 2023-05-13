@@ -39,14 +39,14 @@ function makePageForEpisodes(episodeList) {
   }); 
 
   
-  /* level 250 */
+  /* level 200 */
   
   
   const searchDiv = document.createElement("div");
   searchDiv.classList.add("search-div");
 
-  const matchCountSpan = document.createElement("span");
-  matchCountSpan.textContent = `${episodeList.length} match(es)`;
+  const matchingDisplay = document.createElement("span");
+  matchingDisplay.textContent = `${episodeList.length} Episodes`;
 
   const searchInput = document.createElement("input");
   searchInput.type = "text";
@@ -86,16 +86,23 @@ function makePageForEpisodes(episodeList) {
       searchContainer.appendChild(episodeDiv);
     });
 
-    matchCountSpan.textContent = `${filteredEpisodes.length} match(es)`;
+    matchingDisplay.textContent = `${filteredEpisodes.length} Episodes`; // 
   });
   
   searchDiv.appendChild(searchInput);
   searchDiv.appendChild(searchContainer);
-  searchDiv.appendChild(matchCountSpan);
+  searchDiv.appendChild(matchingDisplay);
   containerDiv.appendChild(searchDiv);
   containerDiv.appendChild(episodeContainer)
   
   rootElem.appendChild(containerDiv);
+
+
+  /* level 300 */
+ 
+  const selectDiv = document.createElement('div')
+  selectDiv.classList.add('select-div')
+
 
 
 }
