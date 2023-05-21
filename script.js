@@ -1,16 +1,11 @@
-//You can edit ALL of the code here
+//Your code
 function setup() {
-  const showId = 82; 
-  fetchEpisodes(showId);
-}
-
-function fetchEpisodes(showId) {
-  const url = `https://api.tvmaze.com/shows/${showId}/episodes`;
+  const url = "https://api.tvmaze.com/shows/82/episodes";
 
   fetch(url)
-    .then((response) => response.json())
-    .then((data) => makePageForEpisodes(data))
-    .catch((error) => console.log(error));
+    .then(response => response.json())
+    .then(data => makePageForEpisodes(data))
+    .catch(error => console.log(error));
 }
 
 function makePageForEpisodes(episodeList) {
@@ -20,19 +15,26 @@ function makePageForEpisodes(episodeList) {
   const main = document.createElement("main");
   main.classList.add("_main");
 
- /* level 100 */
-  const episodeContainer = document.createElement("div");
-  episodeContainer.classList.add("episode-container");
+ const episodeContainer = document.createElement("div");
+ episodeContainer.classList.add("episode-container");
 
-  episodeList.forEach((episode) => {
+ episodeList.forEach((episode) => {
     const episodeDiv = createEpisodeElement(episode);
     episodeContainer.appendChild(episodeDiv);
   });
 
-  selectEpisode(episodeList, main, episodeContainer);
+ const searchBarDiv= searchBar(episodeList);
+ const selectEpisodeDiv = selectEpisode(episodeList);
   
-  /* level 200 */
+  main.appendChild(searchBarDiv);
+  main.appendChild(selectEpisodeDiv);
+  main.appendChild(episodeContainer);
   
+  rootElem.appendChild(main);
+  
+}
+
+function searchBar(episodeList) {
   const searchDiv = document.createElement("div");
   searchDiv.classList.add("search-div");
 
@@ -42,14 +44,13 @@ function makePageForEpisodes(episodeList) {
   const searchInput = document.createElement("input");
   searchInput.type = "text";
   searchInput.placeholder = "Search episodes...";
-  
+
   const searchContainer = document.createElement("div");
   searchContainer.classList.add("search-container");
-  
+
   searchInput.addEventListener("input", () => {
-    
     const searchTerm = searchInput.value.trim().toLowerCase();
-    
+
     const filteredEpisodes = episodeList.filter(
       (episode) =>
         episode.name.toLowerCase().includes(searchTerm) ||
@@ -62,21 +63,27 @@ function makePageForEpisodes(episodeList) {
       searchContainer.appendChild(episodeDiv);
     });
 
-    matchingDisplay.textContent = `${filteredEpisodes.length} Episodes`; // 
+    matchingDisplay.textContent = `Displaying ${filteredEpisodes.length} Episodes / ${episodeList.length}`;
   });
-  
+
   searchDiv.appendChild(searchInput);
   searchDiv.appendChild(searchContainer);
   searchDiv.appendChild(matchingDisplay);
-  main.appendChild(searchDiv);
-  main.appendChild(episodeContainer)
-  
-  rootElem.appendChild(main);
+
+  return searchDiv;
 }
 
-function selectEpisode(episodeList, main,episodeContainer){
-  const selectInput = document.createElement("select");
+function selectEpisode(episodeList) {
+  const selectDiv = document.createElement("div");
+  selectDiv.classList.add("select-div");
+  const selectLabel = document.createElement("label");
+  selectLabel.textContent = "Select an episode: ";
 
+  
+  const selectContainer = document.createElement("div");
+
+  
+  const selectInput = document.createElement("select");
   episodeList.forEach((episode) => {
     const option = document.createElement("option");
     option.value = episode.id;
@@ -85,27 +92,37 @@ function selectEpisode(episodeList, main,episodeContainer){
     option.textContent = `${seasonNumber}${episodeNumber} - ${episode.name}`;
     selectInput.appendChild(option);
   });
-  
+
   selectInput.addEventListener("change", (event) => {
-    const selectedIndex = event.target.value;
+    const selectedIndex = event.target.selectedIndex;
     if (selectedIndex >= 0) {
-      const selectedEpisode = episodeList[selectedIndex];
-      loadSelectedEpisode(selectedEpisode, main);
+      const selectedOption = event.target.options[selectedIndex];
+      const selectedEpisode = episodeList.find(episode => episode.id == selectedOption.value);
+      if (selectedEpisode) {
+        const rootElem = document.getElementById("root");
+        rootElem.innerHTML = "";
+
+        const backButton = document.createElement("button");
+        backButton.textContent = "Back to All Episodes";
+        backButton.addEventListener("click", () => {
+          setup();
+        });
+
+        const selectedEpisodeDiv = createEpisodeElement(selectedEpisode);
+
+        rootElem.appendChild(backButton);
+        rootElem.appendChild(selectedEpisodeDiv);
+      }
     } else {
       setup();
     }
   });
-  
-  main.appendChild(selectInput);
-  main.appendChild(episodeContainer);
-};
 
-function loadSelectedEpisode(selectedEpisode,main ) {
-  main.innerHTML = "";
-  
-  const selectedEpisodeDiv = createEpisodeElement(selectedEpisode);
-  main.appendChild(backButton);
-  main.appendChild(selectedEpisodeDiv);
+  selectContainer.appendChild(selectLabel);
+  selectContainer.appendChild(selectInput);
+  selectDiv.appendChild(selectContainer);
+
+  return selectDiv;
 }
 
 function createEpisodeElement(episode) {
@@ -129,14 +146,5 @@ function createEpisodeElement(episode) {
 
   return episodeDiv;
 }
-
-
-
-
-
-
-
-
-
 
 window.onload = setup;
