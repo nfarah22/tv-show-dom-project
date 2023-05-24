@@ -1,3 +1,87 @@
-#root {
-  color: red;
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f2f2f2;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 40px;
+}
+
+.header h1 {
+  font-size: 24px;
+  margin: 0;
+}
+
+.search-container,
+.select-div {
+  flex: 1;
+  margin-right: 10px;
+}
+
+.search-container input[type="text"],
+.select-div select {
+  width: 50%;
+}
+
+.episode-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 20px;
+}
+
+.episode {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.episode:hover {
+  transform: translateY(-5px);
+}
+
+.episode h2 {
+  font-size: 18px;
+  margin: 0;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.episode img {
+  width: 100%;
+  height: auto;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.episode .description {
+  font-size: 14px;
+  color: #777;
+  line-height: 1.5;
+}
+
+.back-button {
+  padding: 10px 20px;
+  border-radius: 5px;
+  background-color: #555;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.back-button:hover {
+  background-color: #333;
 }
