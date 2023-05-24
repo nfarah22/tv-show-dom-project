@@ -1,39 +1,89 @@
-//Your code
+//Your codelet 
 function setup() {
-  const url = "https://api.tvmaze.com/shows/82/episodes";
+  fetchShows();
+}
+// fetchs the list of shows from the API and lists them alphabetcially. 
+// tried to make GOT the default show that the page loads to but it it just returns error.
+function fetchShows() {
+  const url = 'https://api.tvmaze.com/shows';
 
   fetch(url)
-    .then(response => response.json())
-    .then(data => makePageForEpisodes(data))
-    .catch(error => console.log(error));
+    .then((response) => response.json())
+    .then((data) => {
+      const alphabeticalOrder = data.sort((a, b) => a.name.localeCompare(b.name));
+      makePageForShows(alphabeticalOrder);
+    })
+    .catch((error) => console.log(error));
+}
+// makes the page for selecting a tv shows
+function makePageForShows(shows) {
+  const rootElem = document.getElementById('root');
+  rootElem.innerHTML = '';
+  
+  const selectShow = document.createElement('select');
+  selectShow.id = 'select-show';
+  const labelShow = document.createElement('label');
+  labelShow.textContent = 'Select a show: ';
+//  iterates over the shows array and creates an option element for each show. 
+ shows.forEach((show) => {
+    const option = document.createElement('option');
+    option.value = show.id;
+    option.textContent = show.name;
+    selectShow.appendChild(option);
+  });
+
+  // event listener for when a show is selected by user
+  selectShow.addEventListener('change', (event) => {
+    const showId = event.target.value;
+    fetchEpisodes(showId);
+  });
+
+  rootElem.appendChild(labelShow);
+  rootElem.appendChild(selectShow);
+}
+// fetches episodes for the selected show by making an API request 
+function fetchEpisodes(showId) {
+  const url = `https://api.tvmaze.com/shows/${showId}/episodes`;
+
+  fetch(url)
+    .then((response) => response.json())
+    .then((data) => makePageForEpisodes(data))
+    .catch((error) => console.log(error));
 }
 
+// holds episode elements 
+const episodeContainer = document.createElement("div");
+episodeContainer.classList.add("episode-container");
+// provides the page that lists episodes
 function makePageForEpisodes(episodeList) {
   const rootElem = document.getElementById("root");
-  rootElem.innerHTML = "";
+  const main = document.querySelector('main');
+ // Create main element if it doesn't exist
+  if (!main) {
+    const main = document.createElement('main');
+    main.classList.add('_main');
+    rootElem.appendChild(main);
+  }
+
   
-  const main = document.createElement("main");
-  main.classList.add("_main");
+  episodeContainer.innerHTML = "";
 
- const episodeContainer = document.createElement("div");
- episodeContainer.classList.add("episode-container");
-
- episodeList.forEach((episode) => {
+  episodeList.forEach((episode) => {
     const episodeDiv = createEpisodeElement(episode);
     episodeContainer.appendChild(episodeDiv);
   });
 
- const searchBarDiv= searchBar(episodeList);
- const selectEpisodeDiv = selectEpisode(episodeList);
-  
+  const searchBarDiv = searchBar(episodeList);
+  const selectEpisodeDiv = selectEpisode(episodeList);
+
+  main.innerHTML = ""; 
   main.appendChild(searchBarDiv);
   main.appendChild(selectEpisodeDiv);
   main.appendChild(episodeContainer);
-  
-  rootElem.appendChild(main);
-  
-}
 
+  rootElem.appendChild(main);
+}
+// search bar for filtering episodes
 function searchBar(episodeList) {
   const searchDiv = document.createElement("div");
   searchDiv.classList.add("search-div");
@@ -72,17 +122,15 @@ function searchBar(episodeList) {
 
   return searchDiv;
 }
-
+// select epsiodes from a dropdown menu
 function selectEpisode(episodeList) {
   const selectDiv = document.createElement("div");
   selectDiv.classList.add("select-div");
-  const selectLabel = document.createElement("label");
-  selectLabel.textContent = "Select an episode: ";
+  const labelEpisode = document.createElement("label");
+  labelEpisode.textContent = "Select an episode: ";
 
-  
   const selectContainer = document.createElement("div");
 
-  
   const selectInput = document.createElement("select");
   episodeList.forEach((episode) => {
     const option = document.createElement("option");
@@ -118,7 +166,7 @@ function selectEpisode(episodeList) {
     }
   });
 
-  selectContainer.appendChild(selectLabel);
+  selectContainer.appendChild(labelEpisode);
   selectContainer.appendChild(selectInput);
   selectDiv.appendChild(selectContainer);
 

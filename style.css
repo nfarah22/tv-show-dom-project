@@ -23,35 +23,15 @@ body {
   margin: 0;
 }
 
-.select-container {
-  display: flex;
-  align-items: center;
-}
-
-.select-container label {
+.search-container,
+.select-div {
+  flex: 1;
   margin-right: 10px;
 }
 
-.select-container select {
-  padding: 10px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  background-color: #fff;
-  font-size: 14px;
-  appearance: none;
-}
-
-.search-container {
-  display: flex;
-  align-items: center;
-}
-
-.search-container input[type="text"] {
-  padding: 10px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  background-color: #fff;
-  font-size: 14px;
+.search-container input[type="text"],
+.select-div select {
+  width: 50%;
 }
 
 .episode-container {
@@ -105,6 +85,3 @@ body {
 .back-button:hover {
   background-color: #333;
 }
-
-
-
